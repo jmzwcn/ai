@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+  <title>xpower - let me know</title>
+</head>
+
+<body>
+  <iframe id="iframe1" src="https://xpower.iyou.city:8888" style="display: none;" frameborder="0"
+    onload="fitHeight(this)">
+  </iframe>
+  <iframe id="iframe2" src="https://proxy.iyou.city" style="display: none;" frameborder="0" onload="fitHeight(this)">
+  </iframe>
+</body>
+
+</html>
+
+<script>
+  var iframe1 = document.getElementById("iframe1")
+  var iframe2 = document.getElementById("iframe2")
+
+  fetch(iframe1.src + 'fake', { mode: "no-cors" }).then((response) => {
+    iframe1.removeAttribute('style')
+    iframe2.setAttribute('style', 'display: none;')
+  }).catch(error => {
+    iframe2.removeAttribute('style')
+    iframe1.setAttribute('style', 'display: none;')
+  })
+
+  function fitHeight(iframe) {
+    iframe.height = document.documentElement.clientHeight;
+  }
+
+  window.onresize = function () {
+    if (!iframe1.getAttribute('style')) {
+      fitHeight(iframe1)
+    } else {
+      fitHeight(iframe2)
+    }
+  }
+
+  // workaroud for safari
+  setTimeout(function () {
+    if (iframe1.getAttribute('style') && iframe2.getAttribute('style')) {
+      iframe2.removeAttribute('style')
+      iframe1.setAttribute('style', 'display: none;')
+    }
+  }, 200)
+</script>
+
+<style>
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+  }
+
+  iframe {
+    width: 100%;
+  }
+</style>
